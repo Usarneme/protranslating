@@ -9,14 +9,11 @@ const Client = require("./models/client");
 const Provider = require("./models/provider");
 mongoose.connect("mongodb://localhost/protranslating");
 
-app.get("/", (req, res) => {
-  res.send("/ working...");
-});
-
 app.get("/clients", (req, res) => {
   return Client.find((err, response) => {
-    if (err) res.status(500).send("unable to find any clients at this time");
-    res.json(response);
+    if (err)
+      return res.status(500).send("unable to find any clients at this time");
+    return res.json(response);
   });
 });
 
@@ -45,8 +42,25 @@ app.post("/clients", (req, res) => {
 
 app.get("/providers", (req, res) => {
   return Provider.find((err, response) => {
-    if (err) res.status(500).send("unable to find any providers at this time");
-    res.json(response);
+    if (err)
+      return res.status(500).send("unable to find any providers at this time");
+    return res.json(response);
+  });
+});
+
+app.post("/providers", (req, res) => {
+  console.log("posting to providers with req.body:", req.body);
+  if (!req.body.name)
+    return res.status(400).send("Please include a name for the new provider.");
+  const newProvider = new Provider({
+    name: req.body.name,
+  });
+  newProvider.save((err, Provider) => {
+    if (err)
+      return res
+        .status(500)
+        .send("Unable to create new provider at this time. Please try again.");
+    return res.status(200).json(Provider);
   });
 });
 
