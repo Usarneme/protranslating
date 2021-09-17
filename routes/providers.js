@@ -4,7 +4,7 @@
  *    get:
  *      description: Get all Providers
  *      responses:
- *        200:
+ *        201:
  *          description: Returns an array of all Providers
  *        500:
  *          description: There were no Providers found or the process was unable to be completed at this time
@@ -52,7 +52,7 @@ router.get("/", (req, res) => {
   return Provider.find((err, response) => {
     if (err)
       return res.status(500).send("unable to find any providers at this time");
-    return res.json(response);
+    return res.status(201).json(response);
   });
 });
 

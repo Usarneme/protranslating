@@ -1,5 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
+const morgan = require("morgan");
+
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerOptions = {
@@ -32,6 +35,8 @@ const clientRoutes = require("./routes/clients");
 const providerRoutes = require("./routes/providers");
 
 const app = express();
+app.use(morgan("tiny"));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/clients", clientRoutes);
@@ -40,10 +45,10 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 const port = 1337;
 
 const mongoose = require("mongoose");
-const Client = require("./models/client");
-const Provider = require("./models/provider");
+const Client = require("./models/Client");
+const Provider = require("./models/Provider");
 mongoose.connect("mongodb://localhost/protranslating");
 
 app.listen(port, () => {
-  console.log("Express app now running on http://localhost:", port);
+  console.log(`Express app now running on http://localhost:${port}`);
 });

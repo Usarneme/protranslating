@@ -65,7 +65,7 @@ router.get("/", (req, res) => {
   return Client.find((err, response) => {
     if (err)
       return res.status(500).send("unable to find any clients at this time");
-    return res.json(response);
+    return res.status(201).json(response);
   });
 });
 

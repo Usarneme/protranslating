@@ -6,7 +6,10 @@ const ClientSchema = new Schema({
   name: String,
   email: String,
   phone: Number,
-  providers: [String],
+  providers: {
+    type: Schema.Types.ObjectId,
+    ref: "Provider",
+  },
 });
 
 module.exports = Client = mongoose.model("Client", ClientSchema);
