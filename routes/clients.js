@@ -33,6 +33,12 @@
  *                  type: string
  *                  description: The Client's phone number.
  *                  example: 5551212
+ *                providers:
+ *                  type: array
+ *                  description: The Client's Provider(s) listed by Provider ID.
+ *                  example: [
+ *                    { "id": 1 }
+ *                  ]
  *      responses:
  *        201:
  *          description: Returns the newly-created Client that was saved to the MongoDB
