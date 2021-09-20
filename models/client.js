@@ -5,7 +5,7 @@ const ClientSchema = new Schema({
   id: String,
   name: String,
   email: String,
-  phone: Number,
+  phone: String,
   providers: {
     type: Schema.Types.ObjectId,
     ref: "Provider",

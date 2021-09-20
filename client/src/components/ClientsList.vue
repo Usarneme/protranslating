@@ -10,7 +10,7 @@
   </div>
   <div class="container">
     <div class="clients">
-      <table class="table table-striped">
+      <table class="table table-striped table-bordered">
         <thead>
           <tr>
             <th scope="col">Name</th>
@@ -26,9 +26,14 @@
             <th>{{ client.name }}</th>
             <th>{{ client.email }}</th>
             <th>{{ client.phone }}</th>
-            <th>Providers TODO:</th>
+            <th>
+              <span v-for="provider in client.providers" :key="provider"
+                >{{ providersMap[provider.id] + " " }}
+              </span>
+            </th>
             <th>
               <button
+                class="button-link button-edit"
                 @click="
                   handleEdit(
                     client._id,
@@ -42,7 +47,14 @@
                 Edit
               </button>
             </th>
-            <th><button>Delete</button></th>
+            <th>
+              <button
+                class="button-link button-delete"
+                @click="deleteClient(client._id)"
+              >
+                Delete
+              </button>
+            </th>
           </tr>
         </tbody>
       </table>
@@ -51,13 +63,18 @@
 </template>
 
 <script>
-const EVENTS_API_URL = "http://localhost:1337/clients/";
 import EditClient from "./EditClient.vue";
+const CLIENTS_API_URL = "http://localhost:1337/clients/";
 
 export default {
   name: "ClientsList",
   components: {
     EditClient,
+  },
+  props: {
+    providersMap: {
+      type: Object,
+    },
   },
   data() {
     return {
@@ -70,10 +87,10 @@ export default {
     };
   },
   mounted() {
-    fetch(EVENTS_API_URL)
+    fetch(CLIENTS_API_URL)
       .then((response) => response.json())
       .then((result) => {
-        console.log("GOT RESULT OF:", result);
+        console.log("FETCHED CLIENTS:", result);
         this.clients = result;
       });
   },
@@ -93,12 +110,26 @@ export default {
         this.editingProviders
       );
     },
+    deleteClient(id) {
+      console.log("delete clicked for id:", id);
+    },
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.button-link {
+  background: unset;
+  border: none;
+  text-decoration: underline;
+}
+.button-edit {
+  color: #4444cc;
+}
+.button-delete {
+  color: #cc4444;
+}
 h3 {
   margin: 40px 0 0;
 }

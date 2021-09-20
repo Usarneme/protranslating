@@ -32,7 +32,7 @@
  *                phone:
  *                  type: string
  *                  description: The Client's phone number.
- *                  example: 5551212
+ *                  example: 123-555-1212
  *                providers:
  *                  type: array
  *                  description: The Client's Provider(s) listed by Provider ID.
