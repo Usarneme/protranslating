@@ -109,6 +109,7 @@ export default {
         this.editingPhone,
         this.editingProviders
       );
+      this.editClientShowing = true;
     },
     deleteClient(id) {
       console.log("delete clicked for id:", id);

@@ -4,7 +4,9 @@
       <h1>Clients</h1>
       <button @click="newClientShowing = !newClientShowing">New Client</button>
     </header>
-    <ClientsList :providersMap="providersMap" />
+    <div v-if="isLoaded">
+      <ClientsList :providersMap="providersMap" />
+    </div>
     <div :class="[this.newClientShowing == true ? '' : 'hidden']">
       <NewClient />
     </div>
@@ -26,21 +28,26 @@ export default {
     return {
       newClientShowing: false,
       providersMap: {},
+      isLoaded: false,
     };
   },
-  mounted() {
-    fetch(PROVIDERS_API_URL)
-      .then((response) => response.json())
-      .then((result) => {
-        console.log("FETCHED PROVIDERS:", result);
-        this.updateProvidersMap(result);
-      });
+  created() {
+    this.loadData();
   },
   methods: {
-    updateProvidersMap(json) {
-      json.forEach(
-        (provider) => (this.providersMap[provider.id] = provider.name)
-      );
+    loadData: async function() {
+      try {
+        const raw = await fetch(PROVIDERS_API_URL);
+        const json = await raw.json();
+        console.log("FETCHED PROVIDERS:", json);
+        json.forEach(
+          (provider) => (this.providersMap[provider.id] = provider.name)
+        );
+        console.log("UPDATED PROVIDERS OBJ", this.providersMap);
+        this.isLoaded = true;
+      } catch (err) {
+        alert("Unable to retrieve data. Please try again later.");
+      }
     },
   },
 };
